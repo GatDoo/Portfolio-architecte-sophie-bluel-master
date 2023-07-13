@@ -31,7 +31,7 @@ function displayWorks(works) {
   });
 }
 
-// Fonction pour récupérer les travaux à partir de l'API
+// Fonction pour récupérer les travaux filtrés à partir de l'API
 function fetchWorks(url) {
   fetch(url)
     .then((response) => response.json())
@@ -46,8 +46,20 @@ function fetchWorks(url) {
     });
 }
 
-// Appel de la fonction pour récupérer tous les travaux
-fetchWorks(worksUrl);
+// Fonction pour récupérer tous les travaux depuis l'API
+function fetchAllWorks() {
+  fetch(worksUrl)
+    .then((response) => response.json())
+    .then((works) => {
+      displayWorks(works);
+    })
+    .catch((error) => {
+      console.error(
+        "Une erreur s'est produite lors de la récupération des travaux:",
+        error
+      );
+    });
+}
 
 // Fonction pour récupérer les catégories disponibles depuis l'API
 function fetchCategories(url) {
@@ -66,10 +78,13 @@ function fetchCategories(url) {
 
         filterButton.addEventListener("click", () => {
           const categoryId = filterButton.getAttribute("data-category-id");
-          const worksUrlWithCategory = `${worksUrl}?category=${categoryId}`;
+          const worksUrlWithCategory = `${worksUrl}?categoryId=${categoryId}`;
           fetchWorks(worksUrlWithCategory);
         });
       });
+
+      // Appel de la fonction pour récupérer tous les travaux une fois que les catégories sont chargées
+      fetchAllWorks();
     })
     .catch((error) => {
       console.error(
