@@ -15,6 +15,7 @@
   <h1>Sophie Bluel <span>Architecte d'inteérieur</span></h1>
   <nav>
     <ul>
+	  <li id="post" style="display: none;">Poster</li>
       <li>projets</li>
       <li>contact</li>
       <li id="login">login</li>
@@ -85,6 +86,7 @@
 	  <button class="close-btn">&times;</button>
 	  
 	  <!-- Contenu de la page de connexion -->
+	  <div class="error-message"></div>
 	  <h2>Log In</h2>
 	  <form action="#" method="post" class="login-input">
 		<p class="texte-login">E-mail</p>
@@ -97,7 +99,17 @@
 		<p class="mdp-oub">Mot de passe oublié</p>
 	  </form>
 	</div>
-  </div>  
+  </div> 
+  
+  <div class="post-modal">
+	<div class="modal-content">
+	  <!-- Contenu de la fenêtre modale -->
+	  <h2>Ajouter des médias dans la galerie</h2>
+	  <!-- ... Ajoutez ici les éléments nécessaires pour l'ajout de médias -->
+	  <button class="modal-close-btn">&times;</button>
+	</div>
+  </div>
+  
 
 <script src="script.js"></script>
 </body>
