@@ -100,3 +100,18 @@ function fetchCategories(url) {
 
 // Appel de la fonction pour récupérer les catégories disponibles
 fetchCategories(categoriesUrl);
+
+
+// Fenêtre Login
+
+const loginLink = document.getElementById("login");
+const modal = document.querySelector(".modal");
+const closeBtn = document.querySelector(".close-btn");
+
+loginLink.addEventListener("click", () => {
+  modal.style.display = "flex";
+});
+
+closeBtn.addEventListener("click", () => {
+  modal.style.display = "none";
+});
