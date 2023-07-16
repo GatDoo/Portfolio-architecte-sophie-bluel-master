@@ -2,6 +2,8 @@ const apiUrl = "http://localhost:5678/api";
 const worksUrl = `${apiUrl}/works`;
 const categoriesUrl = `${apiUrl}/categories`;
 
+let works; // Variable pour stocker les travaux
+
 // Fonction pour créer un élément de travail dans la galerie
 function createWorkElement(work) {
   const workElement = document.createElement("div");
@@ -35,7 +37,8 @@ function displayWorks(works) {
 function fetchWorks(url) {
   fetch(url)
     .then((response) => response.json())
-    .then((works) => {
+    .then((worksData) => {
+      works = worksData; // Stocke les travaux dans la variable globale
       displayWorks(works);
     })
     .catch((error) => {
@@ -50,7 +53,8 @@ function fetchWorks(url) {
 function fetchAllWorks() {
   fetch(worksUrl)
     .then((response) => response.json())
-    .then((works) => {
+    .then((worksData) => {
+      works = worksData; // Stocke les travaux dans la variable globale
       displayWorks(works);
     })
     .catch((error) => {
@@ -77,9 +81,9 @@ function fetchCategories(url) {
         filtersContainer.appendChild(filterButton);
 
         filterButton.addEventListener("click", () => {
-          const categoryId = filterButton.getAttribute("data-category-id");
-          const worksUrlWithCategory = `${worksUrl}?categoryId=${categoryId}`;
-          fetchWorks(worksUrlWithCategory);
+          const categoryId = category.id;
+          const filteredWorks = works.filter((work) => work.category.id === categoryId);
+          displayWorks(filteredWorks);
         });
       });
 
