@@ -348,6 +348,7 @@ input {
 	position: absolute;
 	top: 40px;
 	right: 80px;
+	cursor: pointer;
   }
 
   .img-post {
@@ -425,6 +426,7 @@ input {
 	bottom: 100px;
 	left: 240px;
 	padding: 10px 5px;
+	cursor: pointer;
   }
 
   .delete-work {
@@ -432,4 +434,5 @@ input {
 	position: absolute;
 	bottom: 80px;
 	left: 267px;
+	cursor: pointer;
   }

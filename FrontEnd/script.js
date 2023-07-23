@@ -17,7 +17,6 @@ function createWorkElement(work) {
   titleElement.innerText = work.title;
   workElement.appendChild(titleElement);
 
-  // ... Ajoutez les autres éléments nécessaires pour afficher les informations du travail
 
   return workElement;
 }
@@ -178,3 +177,95 @@ openModalBtn.addEventListener("click", () => {
 closeModalBtn.addEventListener("click", () => {
   modalContainer.style.display = "none";
 });
+
+
+// Fonction pour créer la modale "post" avec les travaux récupérés depuis l'API
+function createPostModal(works) {
+  const imgPostFlex = document.querySelector(".img-post-flex");
+  imgPostFlex.innerHTML = ""; // Efface les travaux existants
+
+  works.forEach((work, index) => {
+    if (work.imageUrl && work.imageUrl.trim() !== "" && work.imageUrl !== null) {
+      const imgPostDetails = document.createElement("div");
+      imgPostDetails.classList.add("img-post-details");
+
+      const imageElement = document.createElement("img");
+      imageElement.src = work.imageUrl;
+      imageElement.classList.add("img-post");
+      imgPostDetails.appendChild(imageElement);
+
+      imgPostFlex.appendChild(imgPostDetails);
+
+      const textPostImg = document.createElement("p");
+      textPostImg.textContent = "éditer";
+      imgPostDetails.appendChild(textPostImg);
+
+      const rectangle = document.createElement("div");
+      rectangle.classList.add("rectangle")
+      imgPostDetails.appendChild(rectangle);
+
+      rectangle.innerHTML = "<i class=\"fa-solid fa-arrows-up-down-left-right\"></i>";
+
+      const rectangle1 = document.createElement("div");
+      rectangle1.classList.add("rectangle1")
+      imgPostDetails.appendChild(rectangle1);
+      rectangle1.setAttribute("data-id", work.id); // Stocker l'ID du travail dans l'attribut "data-id"
+      rectangle1.innerHTML = "<i class=\"fa-solid fa-trash-can\"></i>";
+
+      rectangle1.addEventListener("click", () => {
+        const workId = work.id;
+        deleteWork(workId); // Appeler la fonction pour supprimer le travail côté serveur
+      });
+    }
+  });
+
+  modalContainer.style.display = "flex"; // Afficher la modale après avoir récupéré les travaux
+}
+
+// Fonction pour récupérer les travaux depuis l'API et afficher la modale "post"
+function fetchAndDisplayPostModal() {
+  fetch(worksUrl)
+    .then((response) => response.json())
+    .then((worksData) => {
+      const imgPostWorks = worksData.filter((work) => work.imageUrl && work.imageUrl.trim() !== "" && work.imageUrl !== null);
+      createPostModal(imgPostWorks);
+    })
+    .catch((error) => {
+      console.error("Une erreur s'est produite lors de la récupération des travaux:", error);
+    });
+}
+
+// Appel de la fonction pour récupérer les travaux et afficher la modale "post"
+openModalBtn.addEventListener("click", () => {
+  fetchAndDisplayPostModal();
+});
+
+closeModalBtn.addEventListener("click", () => {
+  const modalContainer = document.querySelector(".post-modal");
+  modalContainer.style.display = "none";
+});
+
+
+function deleteWork(workId) {
+  fetch(`${worksUrl}/${workId}`, {
+    method: "DELETE",
+    headers: {
+      "Authorization": `Bearer ${token}` // Assurez-vous que "token" est disponible ici
+    }
+  })
+    .then((response) => {
+      if (!response.ok) {
+        throw new Error("Suppression du travail échouée.");
+      }
+      return response.json();
+    })
+    .then(() => {
+      // Si la suppression côté serveur réussit, mettez à jour l'interface utilisateur côté client
+      const imgPostFlex = document.querySelector(".img-post-flex");
+      const workToRemove = document.querySelector(`.img-post-details[data-id="${workId}"]`);
+      imgPostFlex.removeChild(workToRemove);
+    })
+    .catch((error) => {
+      console.error("Erreur lors de la suppression du travail :", error);
+    });
+}
