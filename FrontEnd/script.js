@@ -286,25 +286,26 @@ closeAddWorkModalBtn.addEventListener("click", () => {
 });
 
 addWorkForm.addEventListener("submit", (event) => {
-  event.preventDefault(); // Empêche la soumission par défaut du formulaire
+  event.preventDefault(); // Empêcher la soumission par défaut du formulaire
 
   const workTitle = document.getElementById("workTitle").value;
-  const workImage = document.getElementById("workImage").value;
+  const workCatId = document.getElementById("workCat").value;
+  const workImageInput = document.getElementById("workImageInput");
+  const workImageFile = workImageInput.files[0];
 
-  // Créer un nouvel objet workData avec les valeurs saisies
-  const workData = {
-    title: workTitle,
-    imageUrl: workImage,
-  };
+  // Créer un nouvel objet FormData et y ajouter les données
+  const formData = new FormData();
+  formData.append("title", workTitle);
+  formData.append("category", workCatId);
+  formData.append("image", workImageFile);
 
-  // Envoyer le nouvel objet workData à l'API pour ajouter un nouveau travail
+  // Envoyer l'objet FormData au backend en utilisant l'API fetch
   fetch(worksUrl, {
     method: "POST",
     headers: {
       "Authorization": `Bearer ${token}`,
-      "Content-Type": "application/json",
     },
-    body: JSON.stringify(workData),
+    body: formData, // Utiliser l'objet FormData comme corps de la requête
   })
     .then((response) => {
       if (!response.ok) {
@@ -317,11 +318,16 @@ addWorkForm.addEventListener("submit", (event) => {
       works.push(newWork);
       displayWorks(works);
       addWorkModalContainer.style.display = "none"; // Fermer la modale après l'ajout
+      // Réinitialiser le formulaire après l'ajout
+      addWorkForm.reset();
+      previewImage.src = "";
+      previewImage.style.display = "none";
     })
     .catch((error) => {
       console.error("Erreur lors de l'ajout d'un nouveau travail :", error);
     });
 });
+
 
 
 
