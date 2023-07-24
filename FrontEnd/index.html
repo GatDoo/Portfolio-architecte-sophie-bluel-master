@@ -72,7 +72,7 @@
 <div class="modal">
 	<div class="modal-content">
 		<div class="header-modal">
-			<h1>Sophie Bluel <span>Architecte d'inteérieur</span></h1>
+			<h1>Sophie Bluel <span>Architecte d'intérieur</span></h1>
 			<nav>
 				<ul>
 					<li>projets</li>
@@ -98,7 +98,8 @@
 	  </form>
 	</div>
   </div> 
-  
+
+  <!-- Modale Gestion travail -->
   <div class="post-modal">
 	<div class="modal-content1">
 	  <p class="gallery-text">Galerie photo</p>
@@ -111,6 +112,42 @@
 	  <p class="delete-work">Supprimer la galerie</p>
 	</div>
   </div>
+
+  <!-- Modale Ajout travail -->
+  <div class="add-work-modal">
+	<div class="modal-content2">
+	  <h2>Ajout photo</h2>
+	  <form id="addWorkForm" class="add-work-form" action="#" method="post">
+
+    <div class="work-image">
+      <i class="fa-regular fa-image"></i>
+      <input type="file" name="workImage" id="workImageInput" accept="image/*" required>
+      <img id="previewImage" src="" alt="Aperçu de l'image sélectionnée" style="display: none;">
+      <label for="workImage" class="image-text">Choisissez une image</label>
+      <span class="custom-text">jpg, png : 4mo max</span>
+    </div>
+
+    <div class="work-image-title">
+		  <label for="workTitle">Titre</label>
+		  <input type="text" name="workTitle" id="workTitle" required>
+    </div>
+  
+    <div class="work-image-cat">
+      <label for="workCat">Catégorie</label>
+      <select name="workCat" id="workCat" required>
+        <option value="1">Objets</option>
+        <option value="2">Appartements</option>
+        <option value="3">Hotels & restaurants</option>
+      </select>
+    </div>
+	
+		<p class="barre2"></p>
+		<input type="submit" value="Valider">
+	  </form>
+	  <button class="modal-close-btn2">&times;</button>
+	</div>
+  </div>
+  
   
 
 <script src="script.js"></script>

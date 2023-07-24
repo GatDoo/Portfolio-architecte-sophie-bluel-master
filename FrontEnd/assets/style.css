@@ -436,3 +436,177 @@ input {
 	left: 267px;
 	cursor: pointer;
   }
+
+
+  /* Styles pour la modale "Ajout travail" */
+.add-work-modal {
+	position: fixed;
+	top: 0;
+	left: 0;
+	width: 100%;
+	height: 100%;
+	background-color: rgba(0, 0, 0, 0.5);
+	display: none;
+	justify-content: center;
+	align-items: center;
+  }
+  
+  .modal-content2 {
+	background: #FFFEF8;
+	padding: 20px;
+	display: flex;
+	flex-direction: column;
+	width: 630px;
+	height: 731px;
+	border-radius: 10px;
+	position: relative;
+  }
+
+  .modal-content2 h2 {
+	text-align: center;
+	margin-top: 40px;
+  }
+  
+  .add-work-form {
+	display: flex;
+	flex-direction: column;
+  }
+  
+  .add-work-form label {
+	margin-top: 20px;
+  }
+  
+  .add-work-form input[type="text"] {
+	height: 40px;
+	font-size: 1.2em;
+	border: none;
+	box-shadow: 0px 4px 14px rgba(0, 0, 0, 0.09);
+  }
+  
+  .add-work-form input[type="submit"] {
+	position: absolute;
+	bottom: 80px;
+	left: 240px;
+	font-family: 'Syne';
+	font-weight: 700;
+	color: white;
+	background-color: #1D6154;
+	margin: 30px auto 0;
+	width: 180px;
+	height: 40px;
+	text-align: center;
+	border-radius: 60px;
+  }
+  
+  .modal-close-btn2 {
+	background: none;
+	border: none;
+	transform: scale(3);
+	position: absolute;
+	top: 20px;
+	right: 20px;
+	cursor: pointer;
+  }
+
+  .barre2 {
+	border: lightgray solid 1px;
+	width: 420px;
+	position: absolute;
+	bottom: 150px;
+	left: 125px;
+  }
+
+  .image-text {
+	display: none;
+  }
+
+  input[type="file"]::-webkit-file-upload-button {
+	visibility: hidden;
+  }
+  
+  input[type="file"]::before {
+	content: '+ Ajouter photo';
+	display: inline-block;
+	padding: 10px 20px;
+	background-color: #CBD6DC;
+	color: #306685;
+	font-family: 'Work Sans', sans-serif;
+	font-size: 16px;
+	border-radius: 25px;
+	cursor: pointer;
+  }
+  
+  input[type="file"]:hover::before {
+	background-color: #3a9478;
+  }
+
+  .work-image {
+	background-color: #E8F1F6;
+	width: 420px;
+	height: 169px;
+	border-radius: 5px;
+	position: absolute;
+	top: 130px;
+	left: 120px;
+  }
+
+  #workImageInput {
+	position: absolute;
+	top: 110px;
+	left: 130px;
+  }
+
+  .work-image-title {
+	position: absolute;
+	display: flex;
+	flex-direction: column;
+	top: 350px;
+	left: 120px;
+	width: 420px;
+	gap: 10px;
+  }
+
+  .work-image-cat {
+	position: absolute;
+	display: flex;
+	flex-direction: column;
+	top: 450px;
+	left: 120px;
+	width: 420px;
+	gap: 10px;
+  }
+
+  .work-image-cat select {
+	height: 40px;
+	font-size: 1.2em;
+	border: 1px solid #1D6154;
+	border-radius: 5px;
+	padding: 5px;
+	background-color: #FFFEF8;
+	color: #1D6154;
+  }
+
+  .fa-image {
+	transform: scale(6);
+	position: absolute;
+	top: 50px;
+	left: 200px;
+  }
+
+  .custom-text {
+	position: absolute;
+	bottom: 9px;
+	left: 125px;
+	background-color: #E8F1F6;
+	padding-left: 20px;
+  }
+
+  #previewImage {
+	height: 169px;
+	position: absolute;
+	left: 100px;
+	z-index: 2;
+	background-color: #E8F1F6;
+	padding-left: 50px;
+	padding-right: 50px;
+  }
