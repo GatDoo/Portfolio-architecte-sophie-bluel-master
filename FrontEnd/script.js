@@ -121,21 +121,17 @@ loginForm.addEventListener("submit", (event) => {
 
   fetch(`${apiUrl}/users/login`, {
     method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-    },
     body: JSON.stringify(loginData),
   })
     .then((response) => {
       if (!response.ok) {
-        throw new Error(response.statusText);
+        throw new Error(response.statusText); //Renvoie plusiseurs erreurs
       }
       return response.json();
     })
     .then((data) => {
       // Gérer la réponse du serveur après la connexion réussie
       console.log(data);
-      // Vous pouvez ajouter ici une logique pour gérer la réponse du serveur et rediriger l'utilisateur vers une autre page ou effectuer d'autres actions
 
       // Vérifier si la réponse contient l'identifiant de l'utilisateur et le token
       if (data.userId && data.token) {
@@ -246,11 +242,12 @@ closeModalBtn.addEventListener("click", () => {
 });
 
 
+//DELETE
 function deleteWork(workId) {
   fetch(`${worksUrl}/${workId}`, {
     method: "DELETE",
     headers: {
-      "Authorization": `Bearer ${token}` // Assurez-vous que "token" est disponible ici
+      "Authorization": `Bearer ${token}`
     }
   })
     .then((response) => {
@@ -260,7 +257,7 @@ function deleteWork(workId) {
       return response.json();
     })
     .then(() => {
-      // Si la suppression côté serveur réussit, mettez à jour l'interface utilisateur côté client
+      // Si la suppression côté serveur réussit, mettre à jour l'interface utilisateur côté client
       const imgPostFlex = document.querySelector(".img-post-flex");
       const workToRemove = document.querySelector(`.img-post-details[data-id="${workId}"]`);
       imgPostFlex.removeChild(workToRemove);
@@ -271,6 +268,7 @@ function deleteWork(workId) {
 }
 
 
+//ADD
 const openAddWorkModalBtn = document.querySelector(".add-work");
 const addWorkModalContainer = document.querySelector(".add-work-modal");
 const closeAddWorkModalBtn = document.querySelector(".modal-close-btn2");
@@ -294,7 +292,7 @@ addWorkForm.addEventListener("submit", (event) => {
   const workImageFile = workImageInput.files[0];
 
   // Créer un nouvel objet FormData et y ajouter les données
-  const formData = new FormData();
+  const formData = new FormData(); //créé une instance et donc réutilisable
   formData.append("title", workTitle);
   formData.append("category", workCatId);
   formData.append("image", workImageFile);
@@ -383,12 +381,12 @@ addWorkForm.addEventListener("submit", (event) => {
       return response.json();
     })
     .then((newWork) => {
-      // Si l'ajout côté serveur réussit, mettez à jour l'interface utilisateur côté client
+      // Si l'ajout côté serveur réussit, met à jour l'interface utilisateur côté client
       works.push(newWork);
       displayWorks(works);
       addWorkModalContainer.style.display = "none"; // Fermer la modale après l'ajout
       // Réinitialiser le formulaire après l'ajout
-      addWorkForm.reset();
+      addWorkForm.reset(); //(pour formulaire)
       previewImage.src = "";
       previewImage.style.display = "none";
     })
