@@ -56,7 +56,8 @@ body {
 header {
 	display: flex;
 	justify-content: space-between;
-	margin: 50px 0
+	margin: 50px 0;
+	padding-top: 20px;
 }
 section {
 	margin: 50px 0
@@ -609,4 +610,36 @@ input {
 	background-color: #E8F1F6;
 	padding-left: 50px;
 	padding-right: 50px;
+  }
+
+  #modif-mode {
+	width: 100vw;
+	height: 50px;
+	display: flex;
+	flex-direction: row;
+	background-color: black;
+	position: absolute;
+	top: 0;
+	left: 0;
+	justify-content: center;
+	align-items: center;
+  }
+
+  #modif-mode i, #modif-mode p {
+	color: white;
+	padding-right: 10px;
+  }
+
+  #modif-mode button {
+	height: 38px;
+	width: 216px;
+	border-radius: 25px;
+	font-weight: bold;
+  }
+
+  #post {
+	position: absolute;
+	top: 560px;
+	right: 30%;
+	cursor: pointer;
   }

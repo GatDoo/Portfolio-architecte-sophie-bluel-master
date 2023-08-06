@@ -1,4 +1,4 @@
-const apiUrl = "http://localhost:5678/api";
+apiUrl = "http://localhost:5678/api";
 const worksUrl = `${apiUrl}/works`;
 const categoriesUrl = `${apiUrl}/categories`;
 
@@ -37,7 +37,7 @@ function fetchWorks(url) {
   fetch(url)
     .then((response) => response.json())
     .then((worksData) => {
-      works = worksData; // Stocke les travaux dans la variable globale
+      works = worksData; // Stock les travaux dans la variable globale
       displayWorks(works);
     })
     .catch((error) => {
@@ -50,7 +50,7 @@ function fetchAllWorks() {
   fetch(worksUrl)
     .then((response) => response.json())
     .then((worksData) => {
-      works = worksData; // Stocke les travaux dans la variable globale
+      works = worksData; // Stock les travaux dans la variable globale
       displayWorks(works);
     })
     .catch((error) => {
@@ -135,7 +135,6 @@ loginForm.addEventListener("submit", (event) => {
     .then((data) => {
       // Gérer la réponse du serveur après la connexion réussie
       console.log(data);
-      // Vous pouvez ajouter ici une logique pour gérer la réponse du serveur et rediriger l'utilisateur vers une autre page ou effectuer d'autres actions
 
       // Vérifier si la réponse contient l'identifiant de l'utilisateur et le token
       if (data.userId && data.token) {
@@ -162,7 +161,9 @@ const token = localStorage.getItem("token");
 if (token) {
   // Afficher le lien "Poster"
   const postLink = document.getElementById("post");
+  const editMode = document.getElementById("modif-mode");
   postLink.style.display = "block";
+  editMode.style.display = "flex";
 }
 
 // Modale Post
@@ -250,7 +251,7 @@ function deleteWork(workId) {
   fetch(`${worksUrl}/${workId}`, {
     method: "DELETE",
     headers: {
-      "Authorization": `Bearer ${token}` // Assurez-vous que "token" est disponible ici
+      "Authorization": `Bearer ${token}`
     }
   })
     .then((response) => {
@@ -260,7 +261,7 @@ function deleteWork(workId) {
       return response.json();
     })
     .then(() => {
-      // Si la suppression côté serveur réussit, mettez à jour l'interface utilisateur côté client
+      // Si la suppression côté serveur réussit, met à jour l'interface utilisateur côté client
       const imgPostFlex = document.querySelector(".img-post-flex");
       const workToRemove = document.querySelector(`.img-post-details[data-id="${workId}"]`);
       imgPostFlex.removeChild(workToRemove);
