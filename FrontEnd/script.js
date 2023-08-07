@@ -1,6 +1,9 @@
-apiUrl = "http://localhost:5678/api";
+const apiUrl = "http://localhost:5678/api";
 const worksUrl = `${apiUrl}/works`;
 const categoriesUrl = `${apiUrl}/categories`;
+const galleryContainer = document.querySelector(".gallery.articles");
+const imgPostFlex = document.querySelector(".img-post-flex");
+const previewImage = document.getElementById("previewImage");
 
 let works; // Variable pour stocker les travaux
 
@@ -23,7 +26,6 @@ function createWorkElement(work) {
 
 // Fonction pour afficher les travaux dans la galerie
 function displayWorks(works) {
-  const galleryContainer = document.querySelector(".gallery.articles");
   galleryContainer.innerHTML = "";
 
   works.forEach((work) => {
@@ -182,10 +184,9 @@ closeModalBtn.addEventListener("click", () => {
 
 // Fonction pour créer la modale "post" avec les travaux récupérés depuis l'API
 function createPostModal(works) {
-  const imgPostFlex = document.querySelector(".img-post-flex");
   imgPostFlex.innerHTML = ""; // Efface les travaux existants
 
-  works.forEach((work, index) => {
+  works.forEach((work) => {
     if (work.imageUrl && work.imageUrl.trim() !== "" && work.imageUrl !== null) {
       const imgPostDetails = document.createElement("div");
       imgPostDetails.classList.add("img-post-details");
@@ -216,6 +217,7 @@ function createPostModal(works) {
       rectangle1.addEventListener("click", () => {
         const workId = work.id;
         deleteWork(workId); // Appeler la fonction pour supprimer le travail côté serveur
+
       });
     }
   });
@@ -258,13 +260,21 @@ function deleteWork(workId) {
       if (!response.ok) {
         throw new Error("Suppression du travail échouée.");
       }
-      return response.json();
     })
     .then(() => {
       // Si la suppression côté serveur réussit, met à jour l'interface utilisateur côté client
-      const imgPostFlex = document.querySelector(".img-post-flex");
-      const workToRemove = document.querySelector(`.img-post-details[data-id="${workId}"]`);
-      imgPostFlex.removeChild(workToRemove);
+      const galleryContainer = document.querySelector(".gallery.articles");
+      const workElementToRemove = document.querySelector(`.work[data-id="${workId}"]`);
+      if (workElementToRemove) {
+        galleryContainer.removeChild(workElementToRemove);
+      }
+
+      const workModalElementToRemove = document.querySelector(`.img-post-details[data-id="${workId}"]`);
+      if (workModalElementToRemove) {
+        imgPostFlex.removeChild(workModalElementToRemove);
+      }
+      fetchAndDisplayPostModal();
+      fetchAllWorks();
     })
     .catch((error) => {
       console.error("Erreur lors de la suppression du travail :", error);
@@ -286,96 +296,26 @@ closeAddWorkModalBtn.addEventListener("click", () => {
   addWorkModalContainer.style.display = "none";
 });
 
-addWorkForm.addEventListener("submit", (event) => {
-  event.preventDefault(); // Empêcher la soumission par défaut du formulaire
-
-  const workTitle = document.getElementById("workTitle").value;
-  const workCatId = document.getElementById("workCat").value;
-  const workImageInput = document.getElementById("workImageInput");
-  const workImageFile = workImageInput.files[0];
-
-  // Créer un nouvel objet FormData et y ajouter les données
-  const formData = new FormData();
-  formData.append("title", workTitle);
-  formData.append("category", workCatId);
-  formData.append("image", workImageFile);
-
-  // Envoyer l'objet FormData au backend en utilisant l'API fetch
-  fetch(worksUrl, {
-    method: "POST",
-    headers: {
-      "Authorization": `Bearer ${token}`,
-    },
-    body: formData, // Utiliser l'objet FormData comme corps de la requête
-  })
-    .then((response) => {
-      if (!response.ok) {
-        throw new Error("Ajout d'un nouveau travail échoué.");
-      }
-      return response.json();
-    })
-    .then((newWork) => {
-      // Si l'ajout côté serveur réussit, mettez à jour l'interface utilisateur côté client
-      works.push(newWork);
-      displayWorks(works);
-      addWorkModalContainer.style.display = "none"; // Fermer la modale après l'ajout
-      // Réinitialiser le formulaire après l'ajout
-      addWorkForm.reset();
-      previewImage.src = "";
-      previewImage.style.display = "none";
-    })
-    .catch((error) => {
-      console.error("Erreur lors de l'ajout d'un nouveau travail :", error);
-    });
-});
-
-
-
-
-const workImageInput = document.getElementById("workImageInput");
-const previewImage = document.getElementById("previewImage");
-
-// Afficher l'aperçu de l'image lorsqu'elle est sélectionnée
-workImageInput.addEventListener("change", (event) => {
-  const file = event.target.files[0];
-  if (file) {
-    const reader = new FileReader();
-    reader.onload = () => {
-      previewImage.src = reader.result;
-      previewImage.style.display = "block";
-    };
-    reader.readAsDataURL(file);
-  } else {
-    previewImage.src = "";
-    previewImage.style.display = "none";
-  }
-});
-
 // Soumettre le formulaire
 addWorkForm.addEventListener("submit", (event) => {
   event.preventDefault(); // Empêche la soumission par défaut du formulaire
 
   const workTitle = document.getElementById("workTitle").value;
   const workCatId = document.getElementById("workCat").value;
-  const workImage = previewImage.src; // Utiliser l'URL de l'image sélectionnée
+  const workImageInput = document.getElementById("workImageInput");
+  const workImageFile = workImageInput.files[0];
 
-  // Créer un nouvel objet workData avec les valeurs saisies
-  const workData = {
-    title: workTitle,
-    category: {
-      name: workCatId
-    },
-    imageUrl: workImage,
-  };
+  const formData = new FormData();
+  formData.append("image", workImageFile);
+  formData.append("title", workTitle);
+  formData.append("category", workCatId);
 
-  // Envoyer le nouvel objet workData à l'API pour ajouter un nouveau travail
   fetch(worksUrl, {
     method: "POST",
     headers: {
       "Authorization": `Bearer ${token}`,
-      "Content-Type": "application/json",
     },
-    body: JSON.stringify(workData),
+    body: formData,
   })
     .then((response) => {
       if (!response.ok) {
@@ -392,8 +332,24 @@ addWorkForm.addEventListener("submit", (event) => {
       addWorkForm.reset();
       previewImage.src = "";
       previewImage.style.display = "none";
+      imgPostFlex.innerHTML = "";
+
+      fetchAndDisplayPostModal();
     })
     .catch((error) => {
       console.error("Erreur lors de l'ajout d'un nouveau travail :", error);
     });
 });
+
+function preview(event) {
+  const file = event.target.files[0];
+  if (file) {
+    const imageUrl = URL.createObjectURL(file);
+    previewImage.src = imageUrl;
+    previewImage.style.display = "block"; // Afficher l'image de prévisualisation
+  } else {
+    previewImage.src = "";
+    previewImage.style.display = "none"; // Masquer l'image de prévisualisation si aucun fichier n'est sélectionné
+  }
+}
+workImageInput.addEventListener("change", preview);
